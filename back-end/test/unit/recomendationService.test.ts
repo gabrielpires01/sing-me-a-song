@@ -38,3 +38,22 @@ describe("GetIdOrFail" , () => {
 		expect(result).toBe(teste)
 	})
 })
+
+describe("Get Random" , () => {
+	it("No Recomendations" , async () => {
+		jest.spyOn(recommendationService, "getByScore")
+			.mockResolvedValueOnce([])
+		
+		await recommendationService.getRandom()
+			.catch(err => expect(err).toBe("not_found"))
+	})
+
+	it("with Recomendations" , async () => {
+		jest.spyOn(recommendationService, "getByScore")
+			.mockResolvedValueOnce([teste, teste, teste])
+		
+		const result = await recommendationService.getRandom()
+		expect(result).toBeTruthy()
+	})
+		
+})
