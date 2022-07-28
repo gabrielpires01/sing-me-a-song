@@ -49,7 +49,17 @@ describe("Get Random" , () => {
 			.catch(err => expect(err.type).toBe("not_found"))
 	})
 
-	it("with Recomendations" , async () => {
+	it("with Recomendations where dont get any by filter" , async () => {
+		jest.spyOn(recommendationRepository, "findAll")
+			.mockResolvedValueOnce([])
+			.mockResolvedValueOnce([{...teste, score:10},teste,teste])
+		
+		const result = await recommendationService.getRandom()
+		
+		expect(result).toBeTruthy()
+	})
+
+	it("with Recomendations gotten by filter" , async () => {
 		jest.spyOn(recommendationRepository, "findAll")
 			.mockResolvedValueOnce([{...teste, score:10},teste,teste])
 		
