@@ -69,3 +69,18 @@ describe("Get Random" , () => {
 	})
 		
 })
+
+describe("Get Score Filter" , () => {
+	it("Random < 0.7" , async () => {
+		const result = recommendationService.getScoreFilter(0.5)
+
+		expect(result).toBe("gt")
+	})
+
+	it("Random >= 0.7" , async () => {
+		const result = recommendationService.getScoreFilter(0.9)
+
+		expect(result).toBe("lte")
+	})
+		
+})
