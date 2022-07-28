@@ -20,3 +20,21 @@ describe("Insert" , () => {
 	})
 		
 })
+
+describe("GetIdOrFail" , () => {
+	it("If recomendation not found" , async () => {
+		jest.spyOn(recommendationRepository, "find")
+			.mockResolvedValueOnce(null)
+			
+		await recommendationService.getById(1)
+			.catch(err => expect(err.type).toBe("not_found"))
+	})
+	it("If recomendation exists" , async () => {
+		jest.spyOn(recommendationRepository, "find")
+			.mockResolvedValueOnce(teste)
+			
+		const result = await recommendationService.getById(1)
+
+		expect(result).toBe(teste)
+	})
+})
