@@ -41,18 +41,20 @@ describe("GetIdOrFail" , () => {
 
 describe("Get Random" , () => {
 	it("No Recomendations" , async () => {
-		jest.spyOn(recommendationService, "getByScore")
+		jest.spyOn(recommendationRepository, "findAll")
+			.mockResolvedValueOnce([])
 			.mockResolvedValueOnce([])
 		
 		await recommendationService.getRandom()
-			.catch(err => expect(err).toBe("not_found"))
+			.catch(err => expect(err.type).toBe("not_found"))
 	})
 
 	it("with Recomendations" , async () => {
-		jest.spyOn(recommendationService, "getByScore")
-			.mockResolvedValueOnce([teste, teste, teste])
+		jest.spyOn(recommendationRepository, "findAll")
+			.mockResolvedValueOnce([{...teste, score:10},teste,teste])
 		
 		const result = await recommendationService.getRandom()
+		
 		expect(result).toBeTruthy()
 	})
 		

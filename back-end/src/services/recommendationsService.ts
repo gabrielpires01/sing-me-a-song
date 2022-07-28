@@ -89,6 +89,5 @@ export const recommendationService = {
   getRandom,
   get,
   getById: getByIdOrFail,
-  getTop,
-  getByScore
+  getTop
 };
