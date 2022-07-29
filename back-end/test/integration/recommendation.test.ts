@@ -60,6 +60,19 @@ describe("Downvote", () => {
 	})
 })
 
+describe("Random", () => {
+	it("Get Random recommendations",async () => {
+		await recomendationFactory.createRecommendation();
+		await recomendationFactory.createRecommendation();
+		await recomendationFactory.createRecommendation();
+
+		const res = await supertest(app).get(`/recommendations/random`)
+		
+		expect(res.status).toBe(200)
+		expect(res.body).toBeTruthy()
+	})
+})
+
 
 
 afterAll(async () => {
