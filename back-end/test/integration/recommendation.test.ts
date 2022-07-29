@@ -1,10 +1,11 @@
 import supertest from "supertest"
 import app from "../../src/app.js"
+import resetDatabase from "../../src/controllers/testsController.js"
 import { prisma } from "../../src/database.js"
 import recomendationFactory from "../factory/recomendationFactory.js"
 
 beforeEach(async() => {
-	await prisma.$executeRaw`TRUNCATE TABLE recommendations`
+	await resetDatabase()
 })
 
 describe("Insert", () => {
