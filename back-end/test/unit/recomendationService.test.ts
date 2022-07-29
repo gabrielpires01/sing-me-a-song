@@ -18,6 +18,17 @@ describe("Insert" , () => {
 			.insert({name: teste.name, youtubeLink: teste.youtubeLink})
 			.catch(err => expect(err.type).toBe("conflict"))
 	})
+
+	it("If insert succeed" , async () => {
+		jest.spyOn(recommendationRepository, "findByName")
+			.mockResolvedValueOnce(undefined)
+		jest.spyOn(recommendationRepository, "create")
+			.mockResolvedValueOnce(undefined)
+		
+		await recommendationService.insert({name: teste.name, youtubeLink: teste.youtubeLink})
+
+		expect(recommendationRepository.create).toHaveBeenCalled()
+	})
 		
 })
 
