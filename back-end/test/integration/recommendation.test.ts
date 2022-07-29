@@ -30,6 +30,23 @@ describe("Insert", () => {
 	})
 })
 
+describe("Upvote", () => {
+	it("Upvote recommendation",async () => {
+		const recommendation = await recomendationFactory.createRecommendation();
+
+		const { id } = await prisma.recommendation.findUnique({
+			where: {
+				name: recommendation.name
+			}
+		})
+
+		const res = await supertest(app).post(`/recommendations/${id}/upvote`)
+		expect(res.status).toBe(200)
+	})
+})
+
+
+
 afterAll(async () => {
 	await prisma.$disconnect();
 })
