@@ -117,7 +117,7 @@ describe("Get Top", () => {
 		const res = await supertest(app).get(`/recommendations/top/${ammout}`)
 		
 		expect(res.status).toBe(200)
-		expect(res.body[0]).toStrictEqual({...test, id})
+		expect(res.body[0]).toStrictEqual({...recommendation, id})
 	})
 })
 
