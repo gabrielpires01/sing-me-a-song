@@ -45,6 +45,21 @@ describe("Upvote", () => {
 	})
 })
 
+describe("Downvote", () => {
+	it("Downvote recommendation",async () => {
+		const recommendation = await recomendationFactory.createRecommendation();
+
+		const { id } = await prisma.recommendation.findUnique({
+			where: {
+				name: recommendation.name
+			}
+		})
+
+		const res = await supertest(app).post(`/recommendations/${id}/downvote`)
+		expect(res.status).toBe(200)
+	})
+})
+
 
 
 afterAll(async () => {
