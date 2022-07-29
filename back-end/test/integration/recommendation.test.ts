@@ -33,11 +33,7 @@ describe("Upvote", () => {
 	it("Upvote recommendation",async () => {
 		const recommendation = await recomendationFactory.createRecommendation();
 
-		const { id } = await prisma.recommendation.findUnique({
-			where: {
-				name: recommendation.name
-			}
-		})
+		const { id } = await recomendationFactory.findRecommendation(recommendation.name)
 
 		const res = await supertest(app).post(`/recommendations/${id}/upvote`)
 		expect(res.status).toBe(200)
@@ -48,42 +44,30 @@ describe("Downvote", () => {
 	it("Downvote recommendation",async () => {
 		const recommendation = await recomendationFactory.createRecommendation();
 
-		const { id } = await prisma.recommendation.findUnique({
-			where: {
-				name: recommendation.name
-			}
-		})
+		const { id } = await recomendationFactory.findRecommendation(recommendation.name)
 
 		const res = await supertest(app).post(`/recommendations/${id}/downvote`)
 		expect(res.status).toBe(200)
 	})
 
 	it("Downvote recommendation with remove",async () => {
-		const test = {
+		const recommendation = {
 			name: "test",
 			youtubeLink: "https://www.youtube.com/watch?v=FvOpPeKSf_4&list=RDFvOpPeKSf_4&start_radio=1&ab_channel=88rising",
 			score: -6
 		}
 		await prisma.recommendation.create({
-			data: test
+			data: recommendation
 		});
 
-		const { id } = await prisma.recommendation.findUnique({
-			where: {
-				name: test.name
-			}
-		})
+		const { id } = await recomendationFactory.findRecommendation(recommendation.name)
 
 		const res = await supertest(app).post(`/recommendations/${id}/downvote`)
 
-		const recommendation = await prisma.recommendation.findUnique({
-			where: {
-				name: test.name
-			}
-		})
+		const recommendationToBeNull = await recomendationFactory.findRecommendation(recommendation.name)
 
 		expect(res.status).toBe(200)
-		expect(recommendation).toBe(null)
+		expect(recommendationToBeNull).toBe(null)
 	})
 })
 
@@ -115,7 +99,7 @@ describe("Get", () => {
 
 describe("Get Top", () => {
 	it("Get Top recommendations",async () => {
-		const test = {
+		const recommendation = {
 			name: "test",
 			youtubeLink: "https://www.youtube.com/watch?v=FvOpPeKSf_4&list=RDFvOpPeKSf_4&start_radio=1&ab_channel=88rising",
 			score: 5
@@ -123,14 +107,10 @@ describe("Get Top", () => {
 
 		await recomendationFactory.createRecommendation();
 		await prisma.recommendation.create({
-			data: test
+			data: recommendation
 		});
 
-		const { id } = await prisma.recommendation.findUnique({
-			where: {
-				name: test.name
-			}
-		})
+		const { id } = await recomendationFactory.findRecommendation(recommendation.name)
 
 		const ammout = Math.ceil(Math.random() * 2)
 
@@ -145,11 +125,7 @@ describe("Get By Id", () => {
 	it("Get recommendation by Id",async () => {
 		const recommendation = await recomendationFactory.createRecommendation();
 
-		const { id } = await prisma.recommendation.findUnique({
-			where: {
-				name: recommendation.name
-			}
-		})
+		const { id } = await recomendationFactory.findRecommendation(recommendation.name)
 
 		const res = await supertest(app).get(`/recommendations/${id}`)
 		

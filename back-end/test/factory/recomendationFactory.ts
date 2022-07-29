@@ -20,7 +20,18 @@ const createRecommendation = async () => {
 	return recommendation
 }
 
+const findRecommendation =async (name: string) => {
+	const recommendation = await prisma.recommendation.findUnique({
+		where: {
+			name
+		}
+	})
+
+	return recommendation
+}
+
 export default {
 	createRecommendation,
-	fakeRecommendation
+	fakeRecommendation,
+	findRecommendation
 }
