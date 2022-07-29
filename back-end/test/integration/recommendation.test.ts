@@ -58,6 +58,34 @@ describe("Downvote", () => {
 		const res = await supertest(app).post(`/recommendations/${id}/downvote`)
 		expect(res.status).toBe(200)
 	})
+
+	it("Downvote recommendation with remove",async () => {
+		const test = {
+			name: "test",
+			youtubeLink: "https://www.youtube.com/watch?v=FvOpPeKSf_4&list=RDFvOpPeKSf_4&start_radio=1&ab_channel=88rising",
+			score: -6
+		}
+		await prisma.recommendation.create({
+			data: test
+		});
+
+		const { id } = await prisma.recommendation.findUnique({
+			where: {
+				name: test.name
+			}
+		})
+
+		const res = await supertest(app).post(`/recommendations/${id}/downvote`)
+
+		const recommendation = await prisma.recommendation.findUnique({
+			where: {
+				name: test.name
+			}
+		})
+
+		expect(res.status).toBe(200)
+		expect(recommendation).toBe(null)
+	})
 })
 
 describe("Random", () => {
