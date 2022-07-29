@@ -114,6 +114,23 @@ describe("Get Top", () => {
 	})
 })
 
+describe("Get By Id", () => {
+	it("Get recommendation by Id",async () => {
+		const recommendation = await recomendationFactory.createRecommendation();
+
+		const { id } = await prisma.recommendation.findUnique({
+			where: {
+				name: recommendation.name
+			}
+		})
+
+		const res = await supertest(app).get(`/recommendations/${id}`)
+		
+		expect(res.status).toBe(200)
+		expect(res.body).toBeTruthy()
+	})
+})
+
 
 afterAll(async () => {
 	await prisma.$disconnect();
