@@ -86,6 +86,34 @@ describe("Get", () => {
 	})
 })
 
+describe("Get Top", () => {
+	it("Get Top recommendations",async () => {
+		const test = {
+			name: "test",
+			youtubeLink: "https://www.youtube.com/watch?v=FvOpPeKSf_4&list=RDFvOpPeKSf_4&start_radio=1&ab_channel=88rising",
+			score: 5
+		}
+
+		await recomendationFactory.createRecommendation();
+		await prisma.recommendation.create({
+			data: test
+		});
+
+		const { id } = await prisma.recommendation.findUnique({
+			where: {
+				name: test.name
+			}
+		})
+
+		const ammout = Math.ceil(Math.random() * 2)
+
+		const res = await supertest(app).get(`/recommendations/top/${ammout}`)
+		
+		expect(res.status).toBe(200)
+		expect(res.body[0]).toStrictEqual({...test, id})
+	})
+})
+
 
 afterAll(async () => {
 	await prisma.$disconnect();
