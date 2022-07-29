@@ -95,3 +95,18 @@ describe("Get Score Filter" , () => {
 	})
 		
 })
+
+describe("Downvote", () => {
+	it("Will remove recomendation with score  < -5", async () => {
+		jest.spyOn(recommendationRepository, "find")
+			.mockResolvedValueOnce(teste)
+		jest.spyOn(recommendationRepository, "updateScore")
+			.mockResolvedValueOnce({...teste, score: -6})
+		jest.spyOn(recommendationRepository, "remove")
+			.mockResolvedValueOnce(undefined)
+
+		await recommendationService.downvote(20)
+
+		expect(recommendationRepository.remove).toHaveBeenCalled()
+	})
+})
