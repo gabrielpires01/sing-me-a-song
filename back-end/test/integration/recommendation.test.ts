@@ -73,6 +73,18 @@ describe("Random", () => {
 	})
 })
 
+describe("Get", () => {
+	it("Get recommendations",async () => {
+		await recomendationFactory.createRecommendation();
+		await recomendationFactory.createRecommendation();
+		await recomendationFactory.createRecommendation();
+
+		const res = await supertest(app).get(`/recommendations`)
+		
+		expect(res.status).toBe(200)
+		expect(res.body.length).toBe(3)
+	})
+})
 
 
 afterAll(async () => {
