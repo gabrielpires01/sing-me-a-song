@@ -47,10 +47,16 @@ describe("Create Recommendation", () => {
 		cy.wait(1000)
 
 		cy.get("[data-cy='top']").click()
+		cy.location().should(loc => {
+			expect(loc.pathname).to.eq('/top')
+		})
 		cy.wait(3000)
 
 		cy.get("[data-cy='random']").click()
-		cy.wait(1000) 
-		cy.get("[data-cy='downvote']").click().click()
+		cy.location().should(loc => {
+			expect(loc.pathname).to.eq('/random')
+		})
+		cy.wait(3000) 
+		cy.get("[data-cy='downvote']").dblclick()
 	})
 })
